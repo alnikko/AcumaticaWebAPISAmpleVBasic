@@ -7,6 +7,13 @@ Module Module1
     End Sub
 
     ' HELPER METHOD
+    ''' <summary>
+    ''' Acts as a insert new Value like in C#
+    ''' </summary>
+    ''' <param name="newVal"></param>
+    ''' <param name="screenField"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CreateValue(ByVal newVal As String, ByVal screenField As TEST.Field) As Value
         Return CreateValue(newVal, screenField, False)
     End Function
@@ -23,7 +30,7 @@ Module Module1
 
         Return theValue
     End Function
-
+    
     Private Sub CreateCustomer()
         Dim context As New TEST.Screen()
 
