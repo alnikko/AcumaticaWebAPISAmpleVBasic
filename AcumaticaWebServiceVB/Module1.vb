@@ -3,7 +3,8 @@
 Module Module1
 
     Sub Main()
-        CreateCustomer()
+        'CreateCustomer()
+        CreateSaleOrder()
     End Sub
 
     ' HELPER METHOD
@@ -30,17 +31,17 @@ Module Module1
 
         Return theValue
     End Function
-    
+
     Private Sub CreateCustomer()
         Dim context As New TEST.Screen()
-
+        Dim success As Boolean = False
         Try
             context.CookieContainer = New System.Net.CookieContainer()
             context.EnableDecompression = True
             context.Timeout = 10000 'set timeout when to terminate connection
-            context.Url = "http://localhost/AcumaticaERP/Soap/APITEST.asmx"
+            context.Url = "http://localhost/AcumaticaQAT/Soap/APITEST.asmx"
             Dim result As LoginResult = context.Login("admin", "123")
-
+            success = True
             Dim schema As AR303000Content = context.AR303000GetSchema()
 
             'Assign Values
@@ -52,7 +53,17 @@ Module Module1
             Dim city As Value = CreateValue("New York", schema.GeneralInfoMainAddress.City)
 
             'list all values
-            Dim commands As Command() = {customerID, customerName, email, addressLine1, addressLine2, city, schema.Actions.Save, schema.CustomerSummary.CustomerID, schema.GeneralInfoFinancialSettings.CustomerClass}
+            Dim commands As Command() = {
+                customerID,
+                customerName,
+                email,
+                addressLine1,
+                addressLine2,
+                city,
+                schema.Actions.Save,
+                schema.CustomerSummary.CustomerID,
+                schema.GeneralInfoFinancialSettings.CustomerClass ' return value
+            }
 
             schema = context.AR303000Submit(commands)(0)
 
@@ -64,8 +75,76 @@ Module Module1
             Console.WriteLine(ex.Message)
             Console.Read()
         Finally
-            'Terminate Session
-            context.Logout()
+            If success Then
+                'Terminate Session
+                context.Logout()
+            End If
+        End Try
+    End Sub
+
+
+    Private Sub CreateSaleOrder()
+        Dim context As New TEST.Screen()
+        Dim success As Boolean = False
+
+        Try
+            context.CookieContainer = New System.Net.CookieContainer()
+            context.EnableDecompression = True
+            context.Url = "http://localhost/AcumaticaQAT/Soap/APITEST.asmx"
+            Dim result As LoginResult = context.Login("admin", "123")
+
+            success = True
+
+            Dim schema As SO301000Content = context.SO301000GetSchema()
+            Dim commands As New List(Of TEST.Command)()
+
+            'Assign Values
+            commands.Add(CreateValue("IN", schema.OrderSummary.OrderType))
+            commands.Add(CreateValue("<NEW>", schema.OrderSummary.OrderNbr))
+            commands.Add(CreateValue("TEST2", schema.OrderSummary.Customer))
+            commands.Add(CreateValue("Test Sales Order", schema.OrderSummary.Description))
+            commands.Add(CreateValue("OPTIONAL", schema.OrderSummary.CustomerOrder))
+
+            'add new item on document details tab of sales order screen
+
+            'first item
+            commands.Add(schema.DocumentDetails.ServiceCommands.NewRow)
+            commands.Add(CreateValue("AALEGO500", schema.DocumentDetails.InventoryID))
+            commands.Add(CreateValue("4", schema.DocumentDetails.Quantity))
+            commands.Add(CreateValue("EA", schema.DocumentDetails.UOM))
+
+            'second item
+            commands.Add(schema.DocumentDetails.ServiceCommands.NewRow)
+            commands.Add(CreateValue("CONGRILL", schema.DocumentDetails.InventoryID))
+            commands.Add(CreateValue("2", schema.DocumentDetails.Quantity))
+            commands.Add(CreateValue("EA", schema.DocumentDetails.UOM))
+
+            'Save Action
+            commands.Add(schema.Actions.Save)
+
+            'Fetch Data that is generated
+            commands.Add(schema.OrderSummary.OrderType)
+            commands.Add(schema.OrderSummary.OrderNbr)
+            commands.Add(schema.OrderSummary.OrderedQty)
+            commands.Add(schema.OrderSummary.OrderTotal)
+
+
+            Dim schemaResult As SO301000Content() = context.SO301000Submit(commands.ToArray())
+
+
+            Console.WriteLine("Order Type: " + schemaResult(0).OrderSummary.OrderType.Value.ToString())
+            Console.WriteLine("Order Nbr: " + schemaResult(0).OrderSummary.OrderNbr.Value.ToString())
+            Console.WriteLine("Ordered Qty: " + schemaResult(0).OrderSummary.OrderedQty.Value.ToString())
+            Console.WriteLine("Order Total: " + schemaResult(0).OrderSummary.OrderTotal.Value.ToString())
+            Console.Read()
+
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
+            Console.Read()
+        Finally
+            If success Then
+                context.Logout()
+            End If
         End Try
     End Sub
 

@@ -8,3 +8,13 @@ C:\Users\alnikko.espina\Documents\Visual Studio 2008\Projects\AcumaticaWebServic
 C:\Users\alnikko.espina\Documents\Visual Studio 2008\Projects\AcumaticaWebServiceVB\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.exe
 C:\Users\alnikko.espina\Documents\Visual Studio 2008\Projects\AcumaticaWebServiceVB\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.xml
 C:\Users\alnikko.espina\Documents\Visual Studio 2008\Projects\AcumaticaWebServiceVB\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.pdb
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\bin\Debug\AcumaticaWebServiceVB.exe.config
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.exe
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.xml
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.pdb
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\bin\Debug\AcumaticaWebServiceVB.exe
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\bin\Debug\AcumaticaWebServiceVB.pdb
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\bin\Debug\AcumaticaWebServiceVB.xml
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.vbprojResolveAssemblyReference.cache
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.Resources.resources
+C:\Users\alnikko.espina\Source\Repos\AcumaticaWebAPISAmpleVBasic\AcumaticaWebServiceVB\obj\Debug\AcumaticaWebServiceVB.vbproj.GenerateResource.Cache
