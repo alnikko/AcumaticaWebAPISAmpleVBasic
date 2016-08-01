@@ -4,7 +4,8 @@ Module Module1
 
     Sub Main()
         'CreateCustomer()
-        CreateSaleOrder()
+        'CreateSaleOrder()
+        LoginSample()
     End Sub
 
     ' HELPER METHOD
@@ -41,7 +42,7 @@ Module Module1
             context.Timeout = 10000 'set timeout when to terminate connection
             context.Url = "http://localhost/AcumaticaQAT/Soap/APITEST.asmx"
             Dim result As LoginResult = context.Login("admin", "123")
-            success = True
+            success = True 'Login successful
             Dim schema As AR303000Content = context.AR303000GetSchema()
 
             'Assign Values
@@ -85,7 +86,7 @@ Module Module1
 
     Private Sub CreateSaleOrder()
         Dim context As New TEST.Screen()
-        Dim success As Boolean = False
+        Dim loginSuccess As Boolean = False
 
         Try
             context.CookieContainer = New System.Net.CookieContainer()
@@ -93,7 +94,8 @@ Module Module1
             context.Url = "http://localhost/AcumaticaQAT/Soap/APITEST.asmx"
             Dim result As LoginResult = context.Login("admin", "123")
 
-            success = True
+            'If Login is successful
+            loginSuccess = True
 
             Dim schema As SO301000Content = context.SO301000GetSchema()
             Dim commands As New List(Of TEST.Command)()
@@ -131,12 +133,83 @@ Module Module1
 
             Dim schemaResult As SO301000Content() = context.SO301000Submit(commands.ToArray())
 
-
             Console.WriteLine("Order Type: " + schemaResult(0).OrderSummary.OrderType.Value.ToString())
             Console.WriteLine("Order Nbr: " + schemaResult(0).OrderSummary.OrderNbr.Value.ToString())
             Console.WriteLine("Ordered Qty: " + schemaResult(0).OrderSummary.OrderedQty.Value.ToString())
             Console.WriteLine("Order Total: " + schemaResult(0).OrderSummary.OrderTotal.Value.ToString())
             Console.Read()
+
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
+            Console.Read()
+        Finally
+            If loginSuccess Then
+                context.Logout()
+            End If
+        End Try
+    End Sub
+
+    Private Sub LoginSample()
+        Dim context As New TEST.Screen()
+        Dim success As Boolean = False
+        Dim num As Integer
+        Try
+
+            Console.WriteLine("Login Sample")
+            Console.WriteLine("Scenario 1: Logging with only one company in one instance.")
+            Console.WriteLine("Scenario 2: Logging with only one company in one instance with specific branch.")
+            Console.WriteLine("Scenario 3: Logging into multiple companies in one instance.")
+            Console.WriteLine("Scenario 4: Logging into multiple companies in one instance with specific branch.")
+            Console.Write("Enter login scenarion 1 to 4: ")
+            Dim input = Console.ReadLine()
+
+            If Integer.TryParse(input, num) Then
+                context.CookieContainer = New System.Net.CookieContainer()
+                context.EnableDecompression = True
+                context.Url = "http://localhost/AcumaticaQAT/Soap/APITEST.asmx"
+
+                Select Case num
+                    Case 1
+                        Console.WriteLine("Login: admin")
+                        Console.WriteLine("Password: ******")
+                        'Single instance login
+                        Dim result As LoginResult = context.Login("admin", "123")
+                        success = True
+
+                        Console.WriteLine("Successful login")
+                        Console.Read()
+                    Case 2
+                        Console.WriteLine("Login: admin:BranchID")
+                        Console.WriteLine("Password: ******")
+                        'Single instance login with logging into specific branch
+                        'Use Login("username:BranchID", "password")
+                        Dim result As LoginResult = context.Login("admin:BranchID", "123")
+                        success = True
+
+                        Console.WriteLine("Successful login")
+                        Console.Read()
+                    Case 3
+                        Console.WriteLine("Login: admin@CompanyID")
+                        Console.WriteLine("Password: ******")
+                        'If multiple company in a single instance
+                        'Use Login("username@CompanyID", "password")
+                        Dim result As LoginResult = context.Login("username@CompanyID", "password")
+                        success = True
+
+                        Console.WriteLine("Successful login")
+                        Console.Read()
+                    Case 4
+                        Console.WriteLine("Login: admin@CompanyID:BranchID")
+                        Console.WriteLine("Password: ******")
+                        'If logging into a multiple company in a single instance and specify specific branch
+                        'Use Login("username@CompanyID:BranchID", "password"
+                        Dim result As LoginResult = context.Login("usernam@CompanyID:BranchID", "password")
+                        success = True
+
+                        Console.WriteLine("Successful login")
+                        Console.Read()
+                End Select
+            End If
 
         Catch ex As Exception
             Console.WriteLine(ex.Message)
